@@ -1,2 +1,5 @@
 # RBG
-po
+
+
+### TSBuild•û–@
+- npm run build -- --env=[name] // (src/name.ts)
