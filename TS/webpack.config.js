@@ -1,17 +1,24 @@
 const path = require('path');
-module.exports = {
+module.exports =env => {
     // モジュールバンドルを行う起点となるファイルの指定
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト
     // 下記はオブジェクトとして指定した例 
+    return {
+        entry : './src/'+env+'.ts',
+    output : {
+        filename    : env+'.js',
+        path        : path.resolve(__dirname, '../src/main/resources/static/js')
+    },
+    /*
     entry: {
-        bundle: './src/app.ts'
+        './src/'+env.name+'.ts'
     },  
     output: {
         // モジュールバンドルを行った結果を出力する場所やファイル名の指定
         // "__dirname"はこのファイルが存在するディレクトリを表すnode.jsで定義済みの定数
         path: path.join(__dirname,'dist'),
         filename: '[name].js'  // [name]はentryで記述した名前(この例ではbundle）が入る
-    },
+    },*/
     // モジュールとして扱いたいファイルの拡張子を指定する
     // 例えば「import Foo from './foo'」という記述に対して"foo.ts"という名前のファイルをモジュールとして探す
     // デフォルトは['.js', '.json']
@@ -30,5 +37,5 @@ module.exports = {
                 test:/\.ts$/,loader:'ts-loader'
             }
         ]
-    }
+    }}
 }
