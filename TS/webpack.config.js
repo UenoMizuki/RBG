@@ -4,9 +4,10 @@ module.exports =env => {
     // 指定できる値としては、ファイル名の文字列や、それを並べた配列やオブジェクト
     // 下記はオブジェクトとして指定した例 
     return {
-        entry : './src/'+env+'.ts',
+        
+        entry : (env==undefined)?'./src/main.ts':'./src/'+env+'.ts',
         output : {
-            filename    : env+'.js',
+            filename    : ((env==undefined)?"main":env)+'.js',
             path        : path.resolve(__dirname, '../src/main/resources/static/js')
         },
         /*
