@@ -21,13 +21,23 @@ export class SpriteObject extends RootObject{
         this.sprite.setDisplaySize(w,h);
     }
     move(x:integer,y:integer){
-        this.sprite.setPosition(this.sprite.x+x,this.sprite.y+y);
+        this.sprite.x=this.sprite.x+x;
+        this.sprite.y=this.sprite.y+y;
     }
     update(rew?:boolean){
         super.update(rew);
     }
     remove(){
         this.sprite.destroy();
+    }
+    getX():integer{
+        return this.sprite.x;
+    }
+    getY():integer{
+        return this.sprite.y;
+    }
+    setActive(isActive?:boolean){
+        this.sprite.active=isActive;
     }
 
 }

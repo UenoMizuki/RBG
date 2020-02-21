@@ -2,6 +2,8 @@ import * as Phaser from "phaser";
 export class RootObject {
     protected name:string;
     public rewind:integer;
+    
+    removable:boolean=false;
     constructor(name?:string){
         this.rewind=1;
         this.name=name;
@@ -23,6 +25,8 @@ export class RootObject {
         this.rewind=(rew==null||!rew)?1:-1;
     }
     remove(){
+    }
+    setActive(isActive?:boolean){
     }
 }
 

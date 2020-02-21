@@ -34,4 +34,7 @@ export class ImageObject extends RootObject{
         this.image.destroy();
     }
 
+    setActive(isActive:boolean){
+        this.image.active=isActive;
+    }
 }

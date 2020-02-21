@@ -5,6 +5,7 @@ import { KeyManager } from "../../../../keyManager";
 import { Player } from "../../objects/player";
 import { Scene } from "../scene";
 import { Bullet } from "../../objects/bullet";
+import { BulletFunction } from "../../function/bulletFunction";
 
 export class FirstScene extends Scene{
     counter:integer=0;
@@ -36,19 +37,33 @@ export class FirstScene extends Scene{
         if (KeyManager.isPressed(KeyManager.key["x"])){
             rew=true;
         }
-        for(var i=0;i<this.objects.length;i++){
+        let objects2:RootObject[]=new Array();
+        for(let i=0;i<this.objects.length;i++){
             this.objects[i].update(rew);
+            
+            if(this.objects[i].removable){
+                this.objects[i].remove();
+            }else{
+                objects2.push(this.objects[i]);
+            }
         }
+        this.objects=objects2;
         if(this.counter%200==0){
             for(let i=0;i<60;i++){
+                
                 let b=new Bullet(this,"bullet1");
                 b.setPosition(<integer>(this.game.config.width)/2,50);
                 b.setSize(8,8);
                 b.setUpdateMethod((rew?:boolean)=>{
+
+                    b.removable=BulletFunction.outFrameUpdate(<integer>(this.game.config.width),<integer>(this.game.config.height),b.getX(),b.getY(),8,8);
                     b.superUpdate(rew);
                     if(b.counter==-1){
                         //b.remove();
-                    }
+                    }/*
+                    if(b.removable){
+                        console.log(b.getX()+","+b.getY());
+                    }*/
                     if(i%4==0){
                         b.move(b.rewind*6*Math.cos(i*6*Math.PI/180),b.rewind*6*Math.sin(i*6*Math.PI/180));
                     }else if(i%4==1){
@@ -60,7 +75,34 @@ export class FirstScene extends Scene{
                     }
                     b.counter+=b.rewind;
                 });
+                b.setActive(true);
                 this.addObject(b);
+                
+            }
+        }
+        if(this.counter%200==0){
+            for(let i=0;i<40;i++){
+                
+                let b=new Bullet(this,"bullet1");
+                b.setPosition(<integer>(this.game.config.width)/2,50);
+                b.setSize(16,16);
+                b.setUpdateMethod((rew?:boolean)=>{
+
+                    b.removable=BulletFunction.outFrameUpdate(<integer>(this.game.config.width),<integer>(this.game.config.height),b.getX(),b.getY(),16,16);
+                    b.superUpdate(rew);
+                    if(b.counter==-1){
+                        //b.remove();
+                    }
+                    if(i%2==0){
+                        b.move(b.rewind*8*Math.cos(i*4.5*Math.PI/180),8*Math.sin(i*4.5*Math.PI/180));
+                    }else{
+                        b.move(8*Math.cos(i*4.5*Math.PI/180),8*b.rewind*Math.sin(i*4.5*Math.PI/180));
+                    }
+                    b.counter+=b.rewind;
+                });
+                b.setActive(true);
+                this.addObject(b);
+                
             }
         }
         /*
@@ -71,6 +113,8 @@ export class FirstScene extends Scene{
         }*/
         this.player.movePlayer(((this.cursors.left.isDown)?-1:0)+((this.cursors.right.isDown)?1:0),((this.cursors.up.isDown)?-1:0)+((this.cursors.down.isDown)?1:0),KeyManager.isPressed(KeyManager.key["shift"]));
         this.counter++;
+        if(this.counter%10==0)
+        console.log("size:"+this.objects.length);
     }
     addObject(obj:RootObject){
         this.objects.push(obj);
